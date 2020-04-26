@@ -108,3 +108,51 @@
 // console.log(greeting(user))
 
 // 泛型：Generics是指在定义函数、接⼝或类的时候，不预先指定具体的类型，⽽在使⽤的时候再指定类型的⼀种特性。
+
+// 自定义装饰器
+// 类装饰器表达式会在运行时当作函数被调用，类的构造函数作为其唯一的参数
+function log (target: Function) {
+  // target是构造函数
+  console.log(target === Foo) // true
+  target.prototype.log = function () {
+    console.log(this.bar)
+  }
+  // 如果类装饰器返回⼀个值，它会使⽤提供的构造函数来替换类的声明。
+}
+
+// 方法装饰器
+function dong (target: any, name: string, descriptor: any) {
+  // target是原型或构造函数，name是⽅法名，descriptor是属性描述符，
+  // ⽅法的定义⽅式：Object.defineProperty(target, name, descriptor)
+  console.log(target[name] === descriptor.value)
+  // 这⾥通过修改descriptor.value扩展了bar⽅法
+  const baz = descriptor.value // 之前的⽅法
+  descriptor.value = function (val: string) {
+    console.log('dong~~')
+    baz.call(this, val)
+  }
+  return descriptor
+}
+
+// 属性装饰器
+function mua (target:any, name:any) {
+  // target是原型或构造函数，name是属性名
+  console.log(target === Foo.prototype)
+  target[name] = 'mua~~~'
+}
+
+@log
+class Foo {
+  bar = 'bar';
+  @mua ns!:string
+
+  @dong
+  baz (val: string) {
+    this.bar = val
+  }
+}
+const foo = new Foo()
+// @ts-ignore
+foo.log()
+foo.baz('lala')
+console.log(foo.ns)
