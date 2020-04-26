@@ -17,13 +17,32 @@ interface Feature{
   name:string
 }
 
+interface Result<T>{
+  ok:0|1
+  data:T[]
+}
+
+function getData<T> ():Promise<Result<T>> {
+  const data:any[] = [
+    { id: 1, name: '类型注解' },
+    { id: 2, name: '静态类型检测' }
+  ]
+  // return Promise.resolve<Result<T>>({ ok: 1, data })
+  return new Promise(resolve => resolve({ ok: 1, data }))
+}
+
 @Component
 export default class Hello extends Vue {
   // features:string[]
-  private features:Feature[];
-  constructor () {
-    super()
-    this.features = [{ id: 1, name: '类型注解' }, { id: 2, name: '静态类型检测' }]
+  private features:Feature[]=[];
+  // constructor () {
+  //   super()
+  // }
+
+  // 生命周期直接声明
+  private async created () {
+    console.log('created')
+    this.features = (await getData<Feature>()).data
   }
 
   private addFeature (event:any) {

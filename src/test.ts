@@ -106,3 +106,5 @@
 // const user = new Greeter('Jane', 'User') // 创建对象实例
 // console.log(user)
 // console.log(greeting(user))
+
+// 泛型：Generics是指在定义函数、接⼝或类的时候，不预先指定具体的类型，⽽在使⽤的时候再指定类型的⼀种特性。
