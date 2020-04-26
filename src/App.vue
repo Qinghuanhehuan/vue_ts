@@ -2,14 +2,15 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
-    <Hello></Hello>
+    <Hello msg="something" @add="doSomething"></Hello>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import HelloWorld from './components/HelloWorld.vue'
-import Hello from './components/Hello.vue'
+// eslint-disable-next-line no-unused-vars
+import Hello, { Feature } from './components/Hello.vue'
 
 @Component({
   components: {
@@ -17,7 +18,11 @@ import Hello from './components/Hello.vue'
     Hello
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  private doSomething (feature:Feature) {
+    alert(feature.name)
+  }
+}
 </script>
 
 <style>
